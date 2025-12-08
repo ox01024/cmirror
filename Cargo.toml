@@ -2,6 +2,7 @@
 name = "cmirror"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 tokio = { version = "1.0", features = ["full"] }  # 异步运行时
