@@ -1,0 +1,87 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-upload:
+    name: Build - ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux x64
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            use_cross: false
+            archive_ext: .tar.gz
+          # macOS x64
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            use_cross: false
+            archive_ext: .tar.gz
+          # macOS ARM64 (M1/M2)
+          - target: aarch64-apple-darwin
+            os: macos-latest
+            use_cross: false
+            archive_ext: .tar.gz
+          # Windows x64
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            use_cross: false
+            archive_ext: .zip
+          # Linux ARM64 (via Cross)
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+            use_cross: true
+            archive_ext: .tar.gz
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+
+      - name: Install Cross
+        if: matrix.use_cross
+        run: cargo install cross --git https://github.com/cross-rs/cross
+
+      - name: Build
+        shell: bash
+        run: |
+          if [ "${{ matrix.use_cross }}" == "true" ]; then
+            cross build --release --target ${{ matrix.target }}
+          else
+            cargo build --release --target ${{ matrix.target }}
+          fi
+
+      - name: Package (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          cd target/${{ matrix.target }}/release
+          tar -czf ../../../cmirror-${{ matrix.target }}${{ matrix.archive_ext }} cmirror
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          cd target/${{ matrix.target }}/release
+          Compress-Archive -Path cmirror.exe -DestinationPath ..\..\..\cmirror-${{ matrix.target }}${{ matrix.archive_ext }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: cmirror-${{ matrix.target }}${{ matrix.archive_ext }}
