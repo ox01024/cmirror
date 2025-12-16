@@ -48,5 +48,19 @@
     { "name": "Tuna", "url": "http://mirrors.tuna.tsinghua.edu.cn/debian/" },
     { "name": "USTC", "url": "http://mirrors.ustc.edu.cn/debian/" },
     { "name": "Official", "url": "http://deb.debian.org/debian/" }
+  ],
+  "uv": [
+    { "name": "Aliyun", "url": "https://mirrors.aliyun.com/pypi/simple/" },
+    { "name": "Tuna", "url": "https://pypi.tuna.tsinghua.edu.cn/simple" },
+    { "name": "Tencent", "url": "https://mirrors.cloud.tencent.com/pypi/simple" },
+    { "name": "USTC", "url": "https://mirrors.ustc.edu.cn/pypi/simple" },
+    { "name": "Douban", "url": "https://pypi.doubanio.com/simple" },
+    { "name": "Official", "url": "https://pypi.org/simple" }
+  ],
+  "conda": [
+    { "name": "Tuna", "url": "https://mirrors.tuna.tsinghua.edu.cn/anaconda" },
+    { "name": "USTC", "url": "https://mirrors.ustc.edu.cn/anaconda" },
+    { "name": "Aliyun", "url": "https://mirrors.aliyun.com/anaconda" },
+    { "name": "SJTU", "url": "https://mirror.sjtu.edu.cn/anaconda" }
   ]
 }
