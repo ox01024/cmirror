@@ -16,6 +16,8 @@ Cmirror 是一个基于 Rust 编写的跨平台命令行工具，旨在解决国
 | 工具 | 状态 | 配置文件路径 | 备注 |
 | :--- | :--- | :--- | :--- |
 | **pip** (Python) | ✅ 支持 | `~/.pip/pip.conf` (Linux/Mac) | 支持 venv 及全局配置 |
+| **uv** (Python) | ✅ 支持 | `uv.toml` | 优先项目级配置，其次全局 |
+| **conda** (Python) | ✅ 支持 | `~/.condarc` | 自动配置 channels |
 | **npm** (Node.js) | ✅ 支持 | `~/.npmrc` | |
 | **docker** | ✅ 支持 | `/etc/docker/daemon.json` | 需 sudo 权限 |
 | **apt** (Ubuntu/Debian) | ✅ 支持 | `/etc/apt/sources.list` | 智能替换域名，需 sudo |
